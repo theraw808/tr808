@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Dashboard - TR808 Subscribe</title>
+    <script src="https://static.memberstack.com/scripts/v1/memberstack.js" data-memberstack-id="pk_bd7b12b1a04d5eda0df9"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top, rgba(234, 179, 8, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .logo-text p {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        .welcome {
+            margin-bottom: 24px;
+        }
+        .welcome h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .welcome h2 span {
+            color: #eab308;
+        }
+        .welcome p {
+            color: #9ca3af;
+        }
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(234, 179, 8, 0.15);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+        .plan-badge .label {
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .plan-badge .value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #eab308;
+        }
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .usage-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .usage-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .usage-stats {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .usage-stats .used {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .usage-stats .divider {
+            color: #4b5563;
+        }
+        .usage-stats .limit {
+            font-size: 18px;
+            color: #9ca3af;
+        }
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .progress-bar .fill.green { background: #22c55e; }
+        .progress-bar .fill.yellow { background: #eab308; }
+        .progress-bar .fill.red { background: #ef4444; }
+        .submission-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .submission-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .submission-section h3 .icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(234, 179, 8, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .submission-section h3 .icon svg {
+            width: 18px;
+            height: 18px;
+            color: #eab308;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            color: #d1d5db;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="url"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
+        }
+        input::placeholder {
+            color: #6b7280;
+        }
+        input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button[type="submit"] {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button[type="submit"]:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(234, 179, 8, 0.3);
+        }
+        button[type="submit"]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .message.success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+        .message.error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        .limit-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            color: #ef4444;
+            font-size: 14px;
+        }
+        .limit-warning a {
+            color: #eab308;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        [data-ms-content="!members"] {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        [data-ms-content="!members"] p {
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+        [data-ms-content="!members"] a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .usage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div data-ms-content="!members">
+        <div class="container">
+            <p>Please log in to view your dashboard.</p>
+            <a href="login.html">Go to Login</a>
+        </div>
+    </div>
+
+    <div data-ms-content="members">
+        <div class="container">
+            <div class="header">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="tr808-logo.jpg" alt="TR808">
+                    </div>
+                    <div class="logo-text">
+                        <h1>TR808 Underground Radio</h1>
+                        <p>Artist Dashboard</p>
+                    </div>
+                </div>
+                <button class="logout-btn" data-ms-logout>Log Out</button>
+            </div>
+
+            <div class="welcome">
+                <h2>Welcome back, <span id="artist-name">Artist</span></h2>
+                <p>Manage your submissions and track your usage</p>
+            </div>
+
+            <div class="plan-badge">
+                <span class="label">Current Plan</span>
+                <span class="value" id="plan-name">Loading...</span>
+            </div>
+
+            <div class="usage-grid">
+                <div class="usage-card">
+                    <h3>Song Submissions</h3>
+                    <div class="usage-stats">
+                        <span class="used" id="songs-used">0</span>
+                        <span class="divider">/</span>
+                        <span class="limit" id="songs-limit">0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="fill green" id="songs-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="usage-card">
+                    <h3>Video Submissions</h3>
+                    <div class="usage-stats">
+                        <span class="used" id="videos-used">0</span>
+                        <span class="divider">/</span>
+                        <span class="limit" id="videos-limit">0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="fill green" id="videos-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="usage-card">
+                    <h3>DJ Servicing</h3>
+                    <div class="usage-stats">
+                        <span class="used" id="dj-used">0</span>
+                        <span class="divider">/</span>
+                        <span class="limit" id="dj-limit">0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="fill green" id="dj-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submission-section">
+                <h3>
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        </svg>
+                    </span>
+                    Submit New Song
+                </h3>
+                <div id="song-limit-warning" class="limit-warning" style="display: none;">
+                    You've reached your monthly song submission limit. <a href="/">Upgrade your plan</a> to submit more.
+                </div>
+                <form id="song-form">
+                    <div class="form-group">
+                        <label for="song-title">Song Title</label>
+                        <input type="text" id="song-title" name="songTitle" placeholder="Enter song title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="song-url">Song Link (SoundCloud, Spotify, etc.)</label>
+                        <input type="url" id="song-url" name="songUrl" placeholder="https://..." required>
+                    </div>
+                    <button type="submit" id="song-submit-btn">Submit Song</button>
+                </form>
+                <div id="song-message"></div>
+            </div>
+
+            <div class="submission-section">
+                <h3>
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </span>
+                    Submit New Video
+                </h3>
+                <div id="video-limit-warning" class="limit-warning" style="display: none;">
+                    You've reached your monthly video submission limit. <a href="/">Upgrade your plan</a> to submit more.
+                </div>
+                <form id="video-form">
+                    <div class="form-group">
+                        <label for="video-title">Video Title</label>
+                        <input type="text" id="video-title" name="videoTitle" placeholder="Enter video title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="video-url">Video Link (YouTube, Vimeo, etc.)</label>
+                        <input type="url" id="video-url" name="videoUrl" placeholder="https://..." required>
+                    </div>
+                    <button type="submit" id="video-submit-btn">Submit Video</button>
+                </form>
+                <div id="video-message"></div>
+            </div>
+
+            <div class="submission-section">
+                <h3>
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        </svg>
+                    </span>
+                    Request DJ Servicing
+                </h3>
+                <div id="dj-limit-warning" class="limit-warning" style="display: none;">
+                    You've reached your monthly DJ servicing limit. <a href="/">Upgrade your plan</a> to request more.
+                </div>
+                <form id="dj-form">
+                    <div class="form-group">
+                        <label for="dj-song-title">Song Title</label>
+                        <input type="text" id="dj-song-title" name="songTitle" placeholder="Enter song title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dj-song-url">Song Link</label>
+                        <input type="url" id="dj-song-url" name="songUrl" placeholder="https://..." required>
+                    </div>
+                    <button type="submit" id="dj-submit-btn">Request DJ Play</button>
+                </form>
+                <div id="dj-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // TR808 SUBSCRIPTION PLAN CONFIGURATION
+        // ============================================
+        // Replace these with your actual MemberStack Plan IDs
+        // Go to MemberStack Dashboard > Plans to get these IDs
+        
+        const planLimits = {
+            // Monthly Plans
+            "prc_tr808-starter-dmo805vm": { songs: 2, videos: 0, dj: 1, name: "TR808 Starter Monthly" },
+            "prc_tr808-standard-fplz0orl": { songs: 5, videos: 0, dj: 3, name: "TR808 Standard Monthly" },
+            "prc_tr808-pro-vco605qx": { songs: 10, videos: 0, dj: 5, name: "TR808 Pro Monthly" },
+            "prc_tr808-platinum-ydm70or3": { songs: 999, videos: 0, dj: 999, name: "TR808 Platinum Monthly" },
+            
+            // Yearly Plans
+            "prc_tr808-starter-dym30ou2": { songs: 2, videos: 2, dj: 1, name: "TR808 Starter Yearly" },
+            "prc_tr808-standard-v0oi0fnt": { songs: 5, videos: 5, dj: 3, name: "TR808 Standard Yearly" },
+            "prc_tr808-pro-bxmb0ofj": { songs: 10, videos: 10, dj: 5, name: "TR808 Pro Yearly" },
+            "prc_tr808-platinum-bqoa05x5": { songs: 999, videos: 999, dj: 999, name: "TR808 Platinum Yearly" }
+        };
+
+        // ============================================
+        // MEMBERSTACK INTEGRATION
+        // ============================================
+
+        const memberstack = window.$memberstackDom;
+
+        // Check if we need to reset monthly counters
+        function shouldReset(lastReset) {
+            if (!lastReset) return true;
+            const last = new Date(lastReset);
+            const now = new Date();
+            return now.getMonth() !== last.getMonth() || now.getFullYear() !== last.getFullYear();
+        }
+
+        // Get current member data and usage
+        async function getMemberUsage() {
+            try {
+                const { data: member } = await memberstack.getCurrentMember();
+                if (!member) throw new Error("Not logged in");
+
+                // Get active plan
+                const activePlanId = member.planConnections?.[0]?.planId;
+                if (!activePlanId) {
+                    return { member, limits: { songs: 0, videos: 0, dj: 0, name: "No Plan" }, usage: { songs: 0, videos: 0, dj: 0 }, activePlanId: null };
+                }
+
+                const limits = planLimits[activePlanId] || { songs: 0, videos: 0, dj: 0, name: "Unknown" };
+
+                // Get stored usage from MemberStack JSON
+                const { data: memberJson } = await memberstack.getMemberJSON();
+                let usage = memberJson || { songs: 0, videos: 0, dj: 0, lastReset: null };
+
+                // Reset counters if new month
+                if (shouldReset(usage.lastReset)) {
+                    usage = { songs: 0, videos: 0, dj: 0, lastReset: new Date().toISOString() };
+                    await memberstack.updateMemberJSON({ json: usage });
+                }
+
+                return { member, limits, usage, activePlanId };
+            } catch (error) {
+                console.error("Error getting member usage:", error);
+                throw error;
+            }
+        }
+
+        // Update dashboard display
+        async function updateDashboardDisplay() {
+            try {
+                const { member, limits, usage } = await getMemberUsage();
+
+                // Update artist name
+                const artistNameEl = document.getElementById('artist-name');
+                if (artistNameEl && member) {
+                    artistNameEl.textContent = member.name || member.email?.split('@')[0] || 'Artist';
+                }
+
+                // Update plan name
+                const planNameEl = document.getElementById('plan-name');
+                if (planNameEl) {
+                    planNameEl.textContent = limits.name || 'No Active Plan';
+                }
+
+                // Update song usage
+                document.getElementById('songs-used').textContent = usage.songs;
+                document.getElementById('songs-limit').textContent = limits.songs === 999 ? 'Unlimited' : limits.songs;
+                updateProgressBar('songs-progress', usage.songs, limits.songs);
+                updateLimitWarning('song-limit-warning', 'song-submit-btn', usage.songs, limits.songs);
+
+                // Update video usage
+                document.getElementById('videos-used').textContent = usage.videos;
+                document.getElementById('videos-limit').textContent = limits.videos === 999 ? 'Unlimited' : limits.videos;
+                updateProgressBar('videos-progress', usage.videos, limits.videos);
+                updateLimitWarning('video-limit-warning', 'video-submit-btn', usage.videos, limits.videos);
+
+                // Update DJ usage
+                document.getElementById('dj-used').textContent = usage.dj;
+                document.getElementById('dj-limit').textContent = limits.dj === 999 ? 'Unlimited' : limits.dj;
+                updateProgressBar('dj-progress', usage.dj, limits.dj);
+                updateLimitWarning('dj-limit-warning', 'dj-submit-btn', usage.dj, limits.dj);
+
+            } catch (error) {
+                console.error("Dashboard update failed:", error);
+            }
+        }
+
+        // Update progress bar color based on usage
+        function updateProgressBar(elementId, used, limit) {
+            const bar = document.getElementById(elementId);
+            if (!bar) return;
+
+            if (limit === 999) {
+                bar.style.width = '100%';
+                bar.className = 'fill green';
+                return;
+            }
+
+            const percentage = limit > 0 ? (used / limit) * 100 : 0;
+            bar.style.width = Math.min(percentage, 100) + '%';
+
+            // Change color based on usage
+            bar.className = 'fill ' + (percentage >= 90 ? 'red' : percentage >= 70 ? 'yellow' : 'green');
+        }
+
+        // Show/hide limit warning and disable button
+        function updateLimitWarning(warningId, buttonId, used, limit) {
+            const warning = document.getElementById(warningId);
+            const button = document.getElementById(buttonId);
+            
+            if (!warning || !button) return;
+
+            const isLimited = limit !== 999 && used >= limit;
+            
+            warning.style.display = isLimited ? 'block' : 'none';
+            button.disabled = isLimited;
+            button.textContent = isLimited ? 'Limit Reached' : buttonId.replace('-btn', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        // Handle form submission
+        async function handleSubmission(type, formData, messageElementId) {
+            const messageEl = document.getElementById(messageElementId);
+            if (!messageEl) return;
+
+            try {
+                const { limits, usage } = await getMemberUsage();
+
+                // Check if limit reached
+                if (limits[type] !== 999 && usage[type] >= limits[type]) {
+                    messageEl.innerHTML = '<div class="message error">You have reached your monthly limit. Please upgrade your plan.</div>';
+                    return;
+                }
+
+                // Get form data
+                const formValues = Object.fromEntries(new FormData(formData));
+                console.log(`Processing ${type} submission:`, formValues);
+
+                // Here you would typically send to your backend/email service
+                // For now, we'll just simulate success
+
+                // Increment usage counter
+                usage[type] += 1;
+                usage.lastReset = new Date().toISOString();
+                await memberstack.updateMemberJSON({ json: usage });
+
+                // Show success message
+                messageEl.innerHTML = '<div class="message success">Submission successful! We\'ll review your ' + type.replace('s', '') + ' and get back to you soon.</div>';
+                
+                // Update dashboard
+                await updateDashboardDisplay();
+
+                // Clear form
+                formData.reset();
+
+            } catch (error) {
+                console.error("Submission error:", error);
+                messageEl.innerHTML = '<div class="message error">Error: ' + (error.message || 'Something went wrong. Please try again.') + '</div>';
+            }
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboardDisplay();
+
+            // Song form
+            document.getElementById('song-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await handleSubmission('songs', e.target, 'song-message');
+            });
+
+            // Video form
+            document.getElementById('video-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await handleSubmission('videos', e.target, 'video-message');
+            });
+
+            // DJ form
+            document.getElementById('dj-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await handleSubmission('dj', e.target, 'dj-message');
+            });
+        });
+    </script>
+</body>
+</html>
