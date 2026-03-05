@@ -157,10 +157,10 @@
                     <p>After signing up, subscribe to a plan on our <a href="/">main site</a> to unlock full access to artist features.</p>
                 </div>
                 
-                <!-- MemberStack Signup Form with Stripe Checkout -->
+                <!-- MemberStack Signup Form - Testing without Price ID -->
                 <form data-ms-form="signup" data-ms-redirect="/dashboard.html">
-                    <!-- Hidden Plan Price ID for Stripe Checkout -->
-                    <input type="hidden" data-ms-price-id="prc_tr808-starter-dmo805vm">
+                    <!-- Price ID removed for testing - add back once core signup works -->
+                    <!-- <input type="hidden" data-ms-price-id="prc_tr808-starter-dmo805vm"> -->
                     
                     <div class="form-group">
                         <label for="email">Email Address</label>
@@ -185,7 +185,7 @@
                             required
                         >
                     </div>
-                    <button type="submit">Create Account & Subscribe</button>
+                    <button type="submit">Create Account</button>
                 </form>
                 
                 <div class="links">
