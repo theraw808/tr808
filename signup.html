@@ -7,11 +7,7 @@
     <script src="https://static.memberstack.com/scripts/v1/memberstack.js" data-memberstack-id="pk_bd7b12b1a04d5eda0df9"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: #000;
@@ -21,15 +17,11 @@
             justify-content: center;
             padding: 20px;
             position: relative;
-            overflow: hidden;
         }
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(ellipse at top, rgba(234, 179, 8, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
@@ -53,21 +45,9 @@
             align-items: center;
             justify-content: center;
         }
-        .logo img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-        }
-        .logo-section h1 {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        .logo-section p {
-            color: #9ca3af;
-            font-size: 14px;
-        }
+        .logo img { width: 60px; height: 60px; object-fit: contain; }
+        .logo-section h1 { color: #fff; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        .logo-section p { color: #9ca3af; font-size: 14px; }
         .card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(234, 179, 8, 0.2);
@@ -75,19 +55,8 @@
             padding: 32px;
             backdrop-filter: blur(10px);
         }
-        .card h2 {
-            color: #fff;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .card .subtitle {
-            color: #9ca3af;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
+        .card h2 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+        .card .subtitle { color: #9ca3af; font-size: 14px; text-align: center; margin-bottom: 24px; }
         .info-box {
             background: rgba(234, 179, 8, 0.1);
             border: 1px solid rgba(234, 179, 8, 0.3);
@@ -95,19 +64,9 @@
             padding: 12px 16px;
             margin-bottom: 24px;
         }
-        .info-box p {
-            color: #d1d5db;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        .info-box a {
-            color: #eab308;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .info-box p { color: #d1d5db; font-size: 13px; line-height: 1.5; }
+        .info-box a { color: #eab308; text-decoration: none; font-weight: 600; }
+        .form-group { margin-bottom: 20px; }
         label {
             display: block;
             color: #d1d5db;
@@ -115,7 +74,7 @@
             font-weight: 500;
             margin-bottom: 8px;
         }
-        input {
+        input[type="email"], input[type="password"], input[type="text"] {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.05);
@@ -125,14 +84,8 @@
             font-size: 15px;
             transition: all 0.2s;
         }
-        input:focus {
-            outline: none;
-            border-color: #eab308;
-            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
-        }
-        input::placeholder {
-            color: #6b7280;
-        }
+        input:focus { outline: none; border-color: #eab308; box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1); }
+        input::placeholder { color: #6b7280; }
         button[type="submit"] {
             width: 100%;
             padding: 14px;
@@ -156,18 +109,9 @@
             padding-top: 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .links p {
-            color: #9ca3af;
-            font-size: 14px;
-        }
-        .links a {
-            color: #eab308;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
+        .links p { color: #9ca3af; font-size: 14px; }
+        .links a { color: #eab308; text-decoration: none; font-weight: 600; }
+        .links a:hover { text-decoration: underline; }
         .back-link {
             display: block;
             text-align: center;
@@ -175,19 +119,10 @@
             color: #6b7280;
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.2s;
         }
-        .back-link:hover {
-            color: #fff;
-        }
-        [data-ms-content="members"] {
-            text-align: center;
-            padding: 40px 20px;
-        }
-        [data-ms-content="members"] p {
-            color: #d1d5db;
-            margin-bottom: 20px;
-        }
+        .back-link:hover { color: #fff; }
+        [data-ms-content="members"] { text-align: center; padding: 40px 20px; }
+        [data-ms-content="members"] p { color: #d1d5db; margin-bottom: 20px; }
         [data-ms-content="members"] a {
             display: inline-block;
             padding: 12px 24px;
@@ -201,6 +136,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- NOT LOGGED IN -->
         <div data-ms-content="!members">
             <div class="logo-section">
                 <div class="logo">
@@ -212,26 +148,47 @@
             <div class="card">
                 <h2>Create Your Account</h2>
                 <p class="subtitle">Start your journey with TR808</p>
+                
                 <div class="info-box">
                     <p>After signing up, subscribe to a plan on our <a href="/">main site</a> to unlock full access to artist features.</p>
                 </div>
-                <form data-ms-form="signup">
+                
+                <!-- MemberStack Signup Form -->
+                <form data-ms-form="signup" data-ms-redirect="/dashboard.html">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="you@example.com" 
+                            data-ms-member="email"
+                            required
+                        >
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="At least 6 characters" required minlength="6">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="At least 8 characters" 
+                            data-ms-member="password"
+                            minlength="8"
+                            required
+                        >
                     </div>
                     <button type="submit">Create Account</button>
                 </form>
+                
                 <div class="links">
                     <p>Already have an account? <a href="login.html">Log in</a></p>
                 </div>
             </div>
             <a href="/" class="back-link">← Back to home</a>
         </div>
+        
+        <!-- ALREADY LOGGED IN -->
         <div data-ms-content="members">
             <div class="logo-section">
                 <div class="logo">
