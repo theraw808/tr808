@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Dashboard - TR808 Subscribe</title>
-    <script 
-  data-memberstack-app="app_cmmb50zod009r0stf80xlcgiy" 
-  src="https://static.memberstack.com/scripts/v2/memberstack.js" 
-  type="text/javascript">
+    <script type="module">
+    import memberstackDOM from 'https://unpkg.com/@memberstack/dom@latest/dist/memberstack-dom.esm.js';
+    window.memberstack = memberstackDOM.init({
+        domain: "https://memberstack-client.tr808subscribe.com",
+        publicKey: "pk_bd7b12b1a04d5eda0df9"
+    });
 </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -496,7 +498,9 @@
         // MEMBERSTACK INTEGRATION
         // ============================================
 
-        const memberstack = window.$memberstackDom;
+        // MemberStack is initialized in the module script above
+// Access via window.memberstack after initialization
+const getMemberstack = () => window.memberstack;
 
         // Check if we need to reset monthly counters
         function shouldReset(lastReset) {
@@ -509,7 +513,10 @@
         // Get current member data and usage
         async function getMemberUsage() {
             try {
-                const { data: member } = await memberstack.getCurrentMember();
+                const ms = getMemberstack();
+                if (!ms) throw new Error("MemberStack not initialized");
+                
+                const member = await ms.getCurrentMember();
                 if (!member) throw new Error("Not logged in");
 
                 // Get active plan
@@ -521,13 +528,13 @@
                 const limits = planLimits[activePlanId] || { songs: 0, videos: 0, dj: 0, name: "Unknown" };
 
                 // Get stored usage from MemberStack JSON
-                const { data: memberJson } = await memberstack.getMemberJSON();
+                const memberJson = await ms.getMemberJSON();
                 let usage = memberJson || { songs: 0, videos: 0, dj: 0, lastReset: null };
 
                 // Reset counters if new month
                 if (shouldReset(usage.lastReset)) {
                     usage = { songs: 0, videos: 0, dj: 0, lastReset: new Date().toISOString() };
-                    await memberstack.updateMemberJSON({ json: usage });
+                    await ms.updateMemberJSON({ json: usage });
                 }
 
                 return { member, limits, usage, activePlanId };
@@ -633,7 +640,8 @@
                 // Increment usage counter
                 usage[type] += 1;
                 usage.lastReset = new Date().toISOString();
-                await memberstack.updateMemberJSON({ json: usage });
+                const ms = getMemberstack();
+                if (ms) await ms.updateMemberJSON({ json: usage });
 
                 // Show success message
                 messageEl.innerHTML = '<div class="message success">Submission successful! We\'ll review your ' + type.replace('s', '') + ' and get back to you soon.</div>';

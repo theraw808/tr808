@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - TR808 Subscribe</title>
-    <script 
-  data-memberstack-app="app_cmmb50zod009r0stf80xlcgiy" 
-  src="https://static.memberstack.com/scripts/v2/memberstack.js" 
-  type="text/javascript">
+    <script type="module">
+    import memberstackDOM from 'https://unpkg.com/@memberstack/dom@latest/dist/memberstack-dom.esm.js';
+    window.memberstack = memberstackDOM.init({
+        domain: "https://memberstack-client.tr808subscribe.com",
+        publicKey: "pk_bd7b12b1a04d5eda0df9"
+    });
 </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
